@@ -1,3 +1,7 @@
+.title {
+    text-align: center;
+}
+
 .page-header {
     background-color: #ff9400;
     margin-top: 0;
@@ -12,15 +16,18 @@
 
 .content {
 	padding: 0;
-    margin-left: 40px;
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 80%;
+}
+
+.center {
+    margin: 0 auto;
+    width: 100%;
 }
 
 .date {
     color: #828282;
-}
-
-.save {
-    float: right;
 }
 
 .post-form textarea, .post-form input {
