@@ -8,7 +8,7 @@ from .models import Post
 
 def post_list(request):
     post_list = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-    paginator = Paginator(post_list, 1) # Show 25 posts per page
+    paginator = Paginator(post_list, 5) # Show 25 posts per page
 
     page = request.GET.get('page')
     try:
