@@ -16,9 +16,19 @@
         <div class="content container">
         <div class="center">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-10">
                     {% block content %}
                     {% endblock %}
+        
+                </div>
+                <div class= "col-md-2">
+                    <h4>Monthly Archive</h4>
+                    <div>
+                    {% for month in months %}
+                        {% ifchanged month.0 %} <br /> {{ month.0 }} <br /> {% endifchanged %}
+                        <a href="{% url 'post_month' year=month.0 month=month.1 %}">{{ month.2 }}</a> <br />
+                    {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
