@@ -8,30 +8,35 @@
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
     <body>
         <div class="page-header">
-            {% if user.is_authenticated %}
-                <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            <h2><a href="/">Algorithms Blog | Leon Nguyen</a></h1>
+            <ul class="list-inline">
+                <li><h4><a href="{% url 'about' %}">About Me</a></h4></li>
+                <li><h4><a href="{% url 'contact' %}">Contact</a></h4></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a></li>
             {% endif %}
-            <h1 class="title"><a href="/">Algorithms Blog | Leon Nguyen</a></h1>
+            </ul>
+
         </div>
         <div class="content container">
-        <div class="center">
-            <div class="row">
-                <div class="col-md-10">
-                    {% block content %}
-                    {% endblock %}
-        
-                </div>
-                <div class= "col-md-2">
-                    <h4>Monthly Archive</h4>
-                    <div>
-                    {% for month in months %}
-                        {% ifchanged month.0 %} <br /> {{ month.0 }} <br /> {% endifchanged %}
-                        <a href="{% url 'post_month' year=month.0 month=month.1 %}">{{ month.2 }}</a> <br />
-                    {% endfor %}
+            <div class="center">
+                <div class="row">
+                    <div class="col-md-10">
+                        {% block content %}
+                        {% endblock %}
+            
+                    </div>
+                    <div class= "col-md-2">
+                        <h4>Monthly Archive</h4>
+                        <div>
+                        {% for month in months %}
+                            {% ifchanged month.0 %} <br /> {{ month.0 }} <br /> {% endifchanged %}
+                            <a href="{% url 'post_month' year=month.0 month=month.1 %}">{{ month.2 }}</a> <br />
+                        {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </body>
 </html>

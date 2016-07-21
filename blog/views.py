@@ -100,3 +100,9 @@ def post_month(request, year, month):
         posts = paginator.page(paginator.num_pages)
 
     return render(request, 'blog/post_month.html', {'posts': posts, 'months': mkmonth_lst()})
+
+def about(request):
+    return render(request, 'blog/about.html', {})
+
+def contact(request):
+    return render(request, 'blog/contact.html', {})
