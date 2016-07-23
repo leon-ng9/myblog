@@ -1,7 +1,14 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404, redirect, render 
 from django.utils import timezone
-from .forms import PostForm
+
+# Email
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from django.template import Context
+from django.core.mail import send_mail
+
+from .forms import PostForm, ContactForm
 from .models import Post
 import calendar
 
@@ -102,7 +109,27 @@ def post_month(request, year, month):
     return render(request, 'blog/post_month.html', {'posts': posts, 'months': mkmonth_lst()})
 
 def about(request):
-    return render(request, 'blog/about.html', {})
+    return render(request, 'blog/about.html', {'months': mkmonth_lst()})
 
 def contact(request):
-    return render(request, 'blog/contact.html', {})
+    
+    if request.method == 'POST':
+        form = ContactForm(data=request.POST)
+        if (form.is_valid()):
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            subject = request.POST.get('subject', '')
+            message = request.POST.get('message')
+
+            email = EmailMessage(
+                subject,
+                message,
+                'contactform@leonnguyen.me',
+                ['leon@leonnguyen.me'],
+                reply_to=[email],
+            )
+
+            email.send()
+            return redirect('contact')
+
+    return render(request, 'blog/contact.html', {'form': ContactForm(), 'months': mkmonth_lst()})

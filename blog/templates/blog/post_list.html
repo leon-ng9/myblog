@@ -3,7 +3,7 @@
 {% block content %}
     {% for post in posts %}
         <div class="post">
-            <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
             <div class="date">
                 {{ post.published_date }}
             </div>
@@ -12,19 +12,15 @@
     {% endfor %}
 
     <div class="pagination">
-	    <span class="step-links">
-	        {% if posts.has_previous %}
-	            <a href="?page={{ posts.previous_page_number }}">Previous</a>
+		<ul class="list-inline">
+        	{% if posts.has_previous %}
+            <li><a href="?page={{ posts.previous_page_number }}">Prev</a></li>
 	        {% endif %}
-
-	        <span class="current">
-	            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
-	        </span>
-
+	        <li>Page {{ posts.number }} of {{ posts.paginator.num_pages }}.</li>
 	        {% if posts.has_next %}
-	            <a href="?page={{ posts.next_page_number }}">Next</a>
+	        <li><a href="?page={{ posts.next_page_number }}">Next</a></li>
 	        {% endif %}
-	    </span>
+        </ul>
 	</div>
 {% endblock %}
 
