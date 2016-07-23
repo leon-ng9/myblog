@@ -1,12 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404, redirect, render 
 from django.utils import timezone
-
-# Email
-from django.template.loader import get_template
 from django.core.mail import EmailMessage
-from django.template import Context
-from django.core.mail import send_mail
 
 from .forms import PostForm, ContactForm
 from .models import Post
@@ -112,7 +107,6 @@ def about(request):
     return render(request, 'blog/about.html', {'months': mkmonth_lst()})
 
 def contact(request):
-    
     if request.method == 'POST':
         form = ContactForm(data=request.POST)
         if (form.is_valid()):
