@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -134,17 +134,18 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True 
 
 
-
-# Heroku deployment settings
+# Deployment settings
 
 import dj_database_url
+
 DATABASES['default'] = dj_database_url.config()
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
 
-DEBUG = False
+
+# For local development
 
 try:
     from .local_settings import * # try to import myblog/local_settings.py
