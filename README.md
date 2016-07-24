@@ -1,2 +1,2 @@
 # myblog
-Personal blog about algorithmic problems. Created with Django.
+Personal blog on algorithmic problems. Created with Django.
