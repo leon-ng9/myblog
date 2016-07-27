@@ -9,15 +9,25 @@ import calendar
 
 # Create your views here.
 
-def mkmonth_lst():
-    """Make a list of months to show archive links."""
-
+def posts_by_month():
     post_list = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
 
     months = []
     for post in post_list:
         y = post.published_date.year
         m = post.published_date.month
+        if (m not in [month[1] for month in months]):
+            months.append((y, m, calendar.month_name[m]))
+
+    return months
+
+def draft_posts_by_month():
+    post_list = Post.objects.filter(published_date__isnull=True).order_by('-created_date')
+
+    months = []
+    for post in post_list:
+        y = post.created_date.year
+        m = post.created_date.month
         if (m not in [month[1] for month in months]):
             months.append((y, m, calendar.month_name[m]))
 
@@ -37,11 +47,11 @@ def post_list(request):
         # if page is out of range (e.g. 9999), deliver last page of results.
         posts = paginator.page(paginator.num_pages)
 
-    return render(request, 'blog/post_list.html', {'posts': posts, 'months': mkmonth_lst()})
+    return render(request, 'blog/post_list.html', {'posts': posts, 'months': posts_by_month()})
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post, 'months': mkmonth_lst()})
+    return render(request, 'blog/post_detail.html', {'post': post, 'months': posts_by_month()})
 
 def post_new(request):
     if request.method == "POST":
@@ -49,7 +59,6 @@ def post_new(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
@@ -65,7 +74,6 @@ def post_edit(request, pk):
             if form.is_valid():
                 post = form.save(commit=False)
                 post.author = request.user
-                post.published_date = timezone.now()
                 post.save()
                 return redirect('post_detail', pk=post.pk)
         else:
@@ -101,10 +109,31 @@ def post_month(request, year, month):
         # if page is out of range (e.g. 9999), deliver last page of results.
         posts = paginator.page(paginator.num_pages)
 
-    return render(request, 'blog/post_month.html', {'posts': posts, 'months': mkmonth_lst()})
+    return render(request, 'blog/post_month.html', {'posts': posts, 'months': posts_by_month()})
+
+def post_draft_list(request):
+    post_list = Post.objects.filter(published_date__isnull=True).order_by('-created_date')
+    paginator = Paginator(post_list, 5) # number of posts per page
+
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # if page is not an integer, deliver first page.
+        posts = paginator.page(1)
+    except EmptyPage:
+        # if page is out of range (e.g. 9999), deliver last page of results.
+        posts = paginator.page(paginator.num_pages)
+
+    return render(request, 'blog/post_draft_list.html', {'posts': posts, 'months': draft_posts_by_month()})
+
+def post_publish(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.publish()
+    return redirect('blog.views.post_detail', pk=pk)
 
 def about(request):
-    return render(request, 'blog/about.html', {'months': mkmonth_lst()})
+    return render(request, 'blog/about.html', {'months': posts_by_month()})
 
 def contact(request):
     if request.method == 'POST':
@@ -126,4 +155,4 @@ def contact(request):
             email.send()
             return redirect('contact')
 
-    return render(request, 'blog/contact.html', {'form': ContactForm(), 'months': mkmonth_lst()})
+    return render(request, 'blog/contact.html', {'form': ContactForm(), 'months': posts_by_month()})

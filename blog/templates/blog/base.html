@@ -9,13 +9,15 @@
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
     <body>
         <div class="page-header">
+
             <h2><a href="/">Algorithms Blog | Leon Nguyen</a></h1>
             <ul class="list-inline">
                 <li><h4><a href="{% url 'about' %}">About Me</a></h4></li>
                 <li><h4><a href="{% url 'contact' %}">Contact</a></h4></li>
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a></li>
-            {% endif %}
+                    <li><a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a></li>
+                    <a href="{% url 'post_draft_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
+                {% endif %}
             </ul>
 
         </div>

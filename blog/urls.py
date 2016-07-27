@@ -11,5 +11,8 @@ urlpatterns = [
     url(r'^about/$', views.about, name='about'),
     url(r'^contact/$', views.contact, name='contact'),
 
+    url(r'^drafts/$', views.post_draft_list, name='post_draft_list'),
+    url(r'^post/(?P<pk>\d+)/publish/$', views.post_publish, name='post_publish'),
+    
     url(r'', views.post_list, name='post_list'),
 ]
