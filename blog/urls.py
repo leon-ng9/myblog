@@ -8,11 +8,15 @@ urlpatterns = [
     url(r'^post/(?P<pk>\d+)/delete/$', views.post_delete, name='post_delete'),
     url(r'^posts/(?P<year>\d+)/(?P<month>\d+)/$', views.post_month, name='post_month'),
 
+    url(r'^post/(?P<pk>\d+)/comment/$', views.post_add_comment, name='post_add_comment'),
+    url(r'^comment/(?P<pk>\d+)/approve/$', views.post_comment_approve, name='post_comment_approve'),
+    url(r'^comment/(?P<pk>\d+)/remove/$', views.post_comment_delete, name='post_comment_delete'),
+
     url(r'^about/$', views.about, name='about'),
     url(r'^contact/$', views.contact, name='contact'),
 
     url(r'^drafts/$', views.post_draft_list, name='post_draft_list'),
     url(r'^post/(?P<pk>\d+)/publish/$', views.post_publish, name='post_publish'),
-    
+
     url(r'', views.post_list, name='post_list'),
 ]
