@@ -19,12 +19,11 @@
     </div>
 
     <hr>
-
     
     {% if post.comments.all.count == 0 %} 
         <p><a href="{% url 'post_add_comment' pk=post.pk %}">Be the first to comment (requires approval)</a></p>
     {% else %}
-        <p><a href="{% url 'post_add_comment' pk=post.pk %}">Add a new comment</a></p>
+        <p><a href="{% url 'post_add_comment' pk=post.pk %}">Add a new comment (requires approval)</a></p>
         {% for comment in post.comments.all %}
             {% if user.is_authenticated or comment.approved_comment %}
             <div class="comment">
