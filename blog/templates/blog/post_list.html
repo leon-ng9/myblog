@@ -8,6 +8,9 @@
                 {{ post.published_date }}
             </div>
             <p>{{ post.text|truncatechars:1000|linebreaksbr }}</p>
+            {% if post.text|length|get_digit:"-1" > 1000 %}
+                <a href="{% url 'post_detail' pk=post.pk %}">View full post</a>
+            {% endif %}
         </div>
     {% endfor %}
 
